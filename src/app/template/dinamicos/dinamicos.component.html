@@ -1,0 +1,77 @@
+<h2>Template <small>Dinamicos</small></h2>
+<hr>
+<form (ngSubmit)="guardar()" #formulario="ngForm">
+    <!-- nombre1 -->
+    <div class="mb-3  row">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-12">
+            <input  type="text" 
+                    class="form-control"
+                    placeholder="Nombre de la persona"
+                    name="nombre"
+                    autocomplete="off"
+                    [(ngModel)] = 'persona.nombre'
+                    required
+                    >
+            <span class="form-text text-danger"
+                *ngIf="nombreIsInvalid()">
+                El campo nombre es requerido
+            </span>
+        </div>
+    </div>
+    
+    <!-- Agregar favorito -->
+    <div class="mb-3  row">
+        <label class="col-sm-3 col-form-label">Agregar</label>
+        <div class="col-sm-12">
+
+            <div class="input-group mb-3">
+                <input  type="text" 
+                        class="form-control"
+                        name="favorito"
+                        [(ngModel)] ='nuevoJuego'
+                        (keyUp.enter) = 'agregarFavorito()'
+                        placeholder="Juego favorito"
+                >
+                <button class="btn btn-outline-primary" 
+                        type="button"
+                        (click)="agregarFavorito()">
+                        Button
+                </button>
+            </div>     
+
+        </div>
+    </div>
+
+    <!-- Lista de juegos -->
+    <div class="mb-3  row">
+        <label class="col-sm-3 col-form-label">Favoritos</label>
+        <div class="input-group col-sm-12"
+            *ngFor="let juego of persona.favoritos; let i = index">
+                <input class="form-control mb-1" 
+                    name="favoritos[{{juego.id}}]"
+                    [(ngModel)]="juego.nombre">
+                <button class="btn btn-outline-danger" 
+                    type="button"
+                    (click)="eliminarFavorito(i)"
+                    >
+                    eliminar
+                </button>
+        </div>
+    </div>
+
+    <div class=" row">
+        <div class="col-sm-12">
+            <button type="submit"
+                    class="btn btn-primary float-end"
+                    [disabled] = "formulario.invalid"
+                    (click)="guardar">
+                Guardar
+            </button>  
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <pre>{{ persona | json}}</pre>
+</div>
